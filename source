@@ -145,7 +145,7 @@ if makefolder and isfolder and writefile and isfile then
     end)
 end
 
-currentVersion = "6.3.5 (modded by antiskid)"
+currentVersion = "6.3.5 (modded)"
 
 ScaledHolder = Instance.new("Frame")
 Scale = Instance.new("UIScale")
@@ -13201,13 +13201,13 @@ end)
 
 task.spawn(function()
 	local success, latestVersionInfo = pcall(function() 
-		local versionJson = game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/version")
+		local versionJson = game:HttpGet("https://raw.githubusercontent.com/loadstring1/infiniteyield/refs/heads/moddediy/version")
 		return HttpService:JSONDecode(versionJson)
 	end)
 
 	if success then
 		if currentVersion ~= latestVersionInfo.Version then
-			notify("Outdated", "Get the new version at infyiff.github.io")
+			notify("Outdated", "Get the new version at github.com/loadstring1/infiniteyield/tree/moddediy")
 		end
 
 		if latestVersionInfo.Announcement and latestVersionInfo.Announcement ~= "" then
