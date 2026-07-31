@@ -6931,41 +6931,43 @@ end)
 teleportRespawnHandler = [[
 local ok, data = pcall(function() return game:GetService("TeleportService"):GetLocalPlayerTeleportData() end)
 if ok and typeof(data) == "CFrame" then
-	local Players = game:GetService("Players")
-	local ME = Players.LocalPlayer
-	while not ME do
-		Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
-		ME = Players.LocalPlayer
-	end
+    local Players = game:GetService("Players")
+    local ME = Players.LocalPlayer
+    while not ME do
+        Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+        ME = Players.LocalPlayer
+    end
 
-	local Character = ME.Character or ME.CharacterAdded:Wait()
-	Character:WaitForChild("HumanoidRootPart")
+    local Character = ME.Character or ME.CharacterAdded:Wait()
+    Character:WaitForChild("HumanoidRootPart")
 
-	local t = tick()
-	while (tick() - t) <= 0.3 do
-		Character:PivotTo(data)
-		task.wait()
-	end
+    local t = tick()
+    while (tick() - t) <= 0.3 do
+        Character:PivotTo(data)
+        task.wait()
+    end
 end
 ]]
-addcmd("rejoin", { "rj" }, function(args, speaker)
-	local data = nil
-	if parseBoolean(args[1], false) == true then
-		if queueteleport then
-			if speaker.Character then data = speaker.Character:GetPivot() end
-			queueteleport(teleportRespawnHandler)
-		else
-			notify("Incompatible Exploit", "Your exploit does not support this argument (missing queue_on_teleport)")
-		end
-	end
+addcmd("rejoin", {"rj"}, function(args, speaker)
+    local data = nil
+    if parseBoolean(args[1], false) == true then
+        if queueteleport then
+            if speaker.Character then
+                data = speaker.Character:GetPivot()
+                queueteleport(teleportRespawnHandler)
+            end
+        else
+            notify("Incompatible Exploit", "Your exploit does not support this argument (missing queue_on_teleport)")
+        end
+    end
 
-	if #Players:GetPlayers() <= 1 then
-		Players.LocalPlayer:Kick("\nRejoining...")
-		task.wait(0.3)
-		TeleportService:Teleport(PlaceId, Players.LocalPlayer, data)
-	else
-		TeleportService:TeleportToPlaceInstance(PlaceId, JobId, Players.LocalPlayer, nil, data)
-	end
+    if #Players:GetPlayers() <= 1 then
+        Players.LocalPlayer:Kick("\nRejoining...")
+        task.wait(0.3)
+        TeleportService:Teleport(PlaceId, Players.LocalPlayer, data)
+    else
+        TeleportService:TeleportToPlaceInstance(PlaceId, JobId, Players.LocalPlayer, nil, data)
+    end
 end)
 
 addcmd("autorejoin", {"autorj"}, function(args, speaker)
