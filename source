@@ -4976,17 +4976,20 @@ function GetInTable(Table, Name)
 end
 
 function respawn(plr)
-	if invisRunning then TurnVisible() end
+	if invisRunning then TurnVisible() end --?
     local char = plr.Character
     local hum = char:FindFirstChildWhichIsA("Humanoid")
-    if hum then hum:ChangeState(Enum.HumanoidStateType.Dead) end
-    char:ClearAllChildren()
-    local newChar = Instance.new("Model")
-    newChar.Parent = workspace
-    plr.Character = newChar
-    task.wait()
-    plr.Character = char
-    newChar:Destroy()
+	local archive = workspace.FallenPartsDestroyHeight
+	local camType = workspace.CurrentCamera.CameraType
+	workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+	workspace.FallenPartsDestroyHeight = 0/0
+    getRoot(char).Position = Vector3.yAxis * archive
+	task.wait(plr:GetNetworkPing())
+	workspace.FallenPartsDestroyHeight = archive
+	repeat task.wait() until not char.Parent or not hum.Parent or (hum and hum.Health <= 0)
+	if hum then
+		hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+	end
 end
 
 local refreshCmd = false
