@@ -6944,8 +6944,8 @@ addcmd("inviteprompt", {}, function(args, speaker)
 	local plrs = getPlayer(args[1], speaker)
 	if #plrs > 0 then
 		ExperienceService:LaunchExperience({
-			placeId = game.PlaceId,
-			gameInstanceId = game.JobId,
+			placeId = PlaceId,
+			gameInstanceId = JobId,
 			referredByPlayerId = plr[1].UserId
 		})
 	end
