@@ -4976,7 +4976,7 @@ function GetInTable(Table, Name)
 end
 
 function respawn(plr)
-	if invisRunning then TurnVisible() end --?
+	if invisRunning then TurnVisible() end
     local char = plr.Character
     local hum = char:FindFirstChildWhichIsA("Humanoid")
 	local archive = workspace.FallenPartsDestroyHeight
