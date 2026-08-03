@@ -8771,22 +8771,25 @@ addcmd("partpath", {"partname"}, function(args, speaker)
 	selectPart()
 end)
 
+local antiAfkCon = nil
 addcmd("antiafk", {"antiidle"}, function(args, speaker)
-	if getconnections then
-		for _, connection in pairs(getconnections(speaker.Idled)) do
-			if connection["Disable"] then
-				connection["Disable"](connection)
-			elseif connection["Disconnect"] then
-				connection["Disconnect"](connection)
-			end
-		end
-	else
-		speaker.Idled:Connect(function()
-			Services.VirtualUser:CaptureController()
-			Services.VirtualUser:ClickButton2(Vector2.new())
-		end)
-	end
-	if not (args[1] and tostring(args[1]) == "nonotify") then notify("Anti Idle", "Anti idle is enabled") end
+    if getconnections then
+        for _, c in getconnections(speaker.Idled) do
+            pcall(function() c:Disable() end) -- supposed to "pause" it
+            pcall(function() c:Disconnect() end) -- supposed to disconnect it
+        end
+    end
+
+    if antiAfkCon then
+        antiAfkCon:Disconnect()
+        antiAfkCon = nil
+    end
+    antiAfkCon = ME.Idled:Connect(function()
+        Services.VirtualUser:CaptureController()
+        Services.VirtualUser:ClickButton2(Vector2.zero)
+    end)
+
+    if not (args[1] and tostring(args[1]) == "nonotify") then notify("Anti Idle", "Anti idle is enabled") end
 end)
 
 addcmd("datalimit", {}, function(args, speaker)
