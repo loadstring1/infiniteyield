@@ -8848,7 +8848,7 @@ addcmd("antiafk", {"antiidle"}, function(args, speaker)
         antiAfkCon:Disconnect()
         antiAfkCon = nil
     end
-    antiAfkCon = ME.Idled:Connect(function()
+    antiAfkCon = speaker.Idled:Connect(function()
         Services.VirtualUser:CaptureController()
         Services.VirtualUser:ClickButton2(Vector2.zero)
     end)
