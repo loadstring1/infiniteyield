@@ -10830,6 +10830,7 @@ addcmd("bang", {"rape"}, function(args, speaker)
 					getRoot(speaker.Character).CFrame = otherRoot.CFrame * bangOffet
 				end)
 			end)
+			break
 		end
 	end
 end)
