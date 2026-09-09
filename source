@@ -5610,18 +5610,6 @@ getprfx=function(strn)
 	end return
 end
 
-function do_exec(str, plr)
-	str = str:gsub('/e ', '')
-	local t = getprfx(str)
-	if not t then return end
-	str = str:sub(t[2])
-	if t[1]=='cmd' then
-		execCmd(str, plr, true)
-		IndexContents('',true,false,true)
-		CMDsF.CanvasPosition = canvasPos
-	end
-end
-
 lastTextBoxString,lastTextBoxCon,lastEnteredString = nil,nil,nil
 
 UserInputService.TextBoxFocused:Connect(function(obj)
@@ -5652,15 +5640,6 @@ UserInputService.InputBegan:Connect(function(input,gameProcessed)
 		elseif input.KeyCode == Enum.KeyCode.Return or input.KeyCode == Enum.KeyCode.KeypadEnter then
 			lastEnteredString = lastTextBoxString
 		end
-	end
-end)
-
-Players.LocalPlayer.Chatted:Connect(function()
-	wait()
-	if lastEnteredString then
-		local message = lastEnteredString
-		lastEnteredString = nil
-		do_exec(message, Players.LocalPlayer)
 	end
 end)
 
@@ -13215,9 +13194,6 @@ if not isLegacyChat then
 
 			if logsEnabled == true then
 				CreateLabel(player.Name, message.Text)
-			end
-			if player.UserId == Players.LocalPlayer.UserId then
-				do_exec(message.Text, Players.LocalPlayer)
 			end
 			eventEditor.FireEvent("OnChatted", player.Name, message.Text)
 			sendChatWebhook(player, message.Text)
